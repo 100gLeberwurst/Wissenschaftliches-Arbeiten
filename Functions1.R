@@ -71,6 +71,7 @@ bivKateg(test$IntMath, test$MLK)
 # dichotomen Variablen berechnet und ausgibt
 
 bivMetDicho <- function(met, dic){
+  print(boxplot(met ~ dic, plot=FALSE))
   boxplot(met ~ dic)
 }
 bivMetDicho(met = test$alter, dic= test$MLK)
