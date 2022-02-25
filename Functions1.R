@@ -74,26 +74,42 @@ bivMetDicho <- function(met, dic){
   print(boxplot(met ~ dic, plot=FALSE))
   boxplot(met ~ dic)
 }
+
+#Test
 bivMetDicho(met = test$alter, dic= test$MLK)
 
 
 # (e) Eine Funktion, die eine mindestens ordinal skalierte Variable
 # quantilbasiert kategorisiert (z.B. in niedrig, mittel, hoch)
 
-quantKateg <- function(){
-  
+quantKateg <- function(v){
+  quantiles <- quantile(v, c(0.33,0.66))
+  kat <- 0
+  for(i in 1:length(v)){
+    if(v[i]<=quantiles[1]){kat[i] <- "niedrig"}
+    if(v[i]<=quantiles[2] && v[i]>quantiles[1]){kat[i] <- "mittel"}
+    if(v[i]>quantiles[2]){kat[i] <- "hoch"}
+  }
+  return(kat)
 }
+
+#Test
+quantKateg(test$alter)
 
 
 
 # (f) Eine Funktion, die eine geeignete Visualisierung von drei oder vier
 # kategorialen Variablen erstellt
 
-visualize <- function(){
-  
+visualize <- function(v1,v2,v3,v4=""){
+  par(mfrow=c(2,2))
+  plot(table(v1))
+  plot(table(v2))
+  plot(table(v3))
+  if(v4!=""){plot(table(v4))}
 }
 
-
+visualize(test$fach, test$IntMath, test$IntPro, test$MLK)
 
 # Freiwillig: weitere zur Deskription und Visualisierung geeignete
 # Funktionen
