@@ -89,9 +89,30 @@ quantKateg <- function(){
 # (f) Eine Funktion, die eine geeignete Visualisierung von drei oder vier
 # kategorialen Variablen erstellt
 
-visualize <- function(){
+visualize <- function(data1,data2,data3,data4){
+  
+  par(mfrow=c(2,2),mar=c(3,6,2,1))
+  
+  barplot(table(data1)/100,horiz=TRUE,las=1,xlim=c(0,1),col="lightblue",
+           xlab="Prozent",main="Studienfach")
+  box()
+  
+  barplot(table(data2)/100,horiz=TRUE,las=1,xlim=c(0,1),col="red4",
+          xlab="Prozent",main="MatheLK")
+  box()
+  
+  barplot(table(data3)/100,horiz=TRUE,las=1,xlim=c(0,1),col="green4",
+          xlab="Prozent",main="Interesse in Programmieren")
+  box()
+  
+  barplot(table(data4)/100,horiz=TRUE,las=1,xlim=c(0,1),col="darkviolet",
+          xlab="Prozent",main="Intersse in Mathe ")
+  box()
+  
   
 }
+
+visualize(daten$studienfach,daten$matheLK,daten$intProg,daten$intMathe)
 
 
 
