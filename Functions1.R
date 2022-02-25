@@ -80,10 +80,14 @@ bivKateg(test$IntMath, test$MLK, "Interesse Mathe", "Mathe LK", TRUE)
 # dichotomen Variablen berechnet und ausgibt
 
 bivMetDicho <- function(met, dic, nameMet, nameDic){
-  print(boxplot(met ~ dic, plot=FALSE))
-  dev.off()
   boxplot(met ~ dic, xlab=nameDic, ylab=nameMet, 
           main=paste("Zusammenhang", nameMet, "und", nameDic))
+  realisationen_von_dic = dic[which(duplicated(dic) == FALSE)]
+  met1 = met[which(dic == realisationen_von_dic[1])]
+  met2 = met[which(dic == realisationen_von_dic[2])]
+  
+  return(list("Realisationen_von_dic" = table(dic), "Erste_Realisation_von_dic" = metric(met1), 
+              "Zweite_Realisation_von_dic" = metric(met2)))
 }
 
 #Test
