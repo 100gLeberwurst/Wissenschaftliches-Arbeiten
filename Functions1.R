@@ -8,23 +8,23 @@ test <- data.frame("alter"=round(rnorm(100, mean = 25,sd = 2),1),
 # (a) Eine Funktion, die verschiedene geeignete deskriptive Statistiken
 # fuer metrische Variablen berechnet und ausgibt
 
-metric <- function(v){
+metric <- function(v, name){
   print(summary(v))
   cat("Var:", var(v))
-  boxplot(v)
+  boxplot(v, xlab=name, main=paste("Auswertung", name))
 }
 #Test
-metric(test$alter)
+metric(test$alter, "Alter")
 
 
 
 # b) Eine Funktion, die verschiedene geeignete deskriptive Statistiken
 # fuer kategoriale Variablen berechnet und ausgibt
 
-kateg <- function(v){
+kateg <- function(v, name, plot=TRUE){
   #browser()
   #Haeufigkeiten
-  cat("Haeufigkeiten","\n")
+  cat("Haeufigkeiten",name, "\n")
   print(table(v))
   
   #Modus
@@ -32,51 +32,63 @@ kateg <- function(v){
   cat("--------------------------", "\n")
   
   #Grafik
-  n <- length(levels(v))
-  maH <- max(table(v))
-  plot.new()
-  plot.window(xlim=c(0,n+1), ylim=c(0,maH))
-  axis(1, at=0:(n+1), labels = c("",levels(v),""))
-  axis(2)
-  rect(xleft=(1:n)-0.5, ybottom=0, xright=(1:n)+0.5, ytop=table(v))
-  
+  if(plot){
+    n <- length(levels(v))
+    maH <- max(table(v))
+    plot.new()
+    plot.window(xlim=c(0,n+1), ylim=c(0,maH))
+    par(oma=c(3,3,3,3))
+    axis(1, at=0:(n+1), labels = c("",levels(v),""))
+    axis(2)
+    rect(xleft=(1:n)-0.5, ybottom=0, xright=(1:n)+0.5, ytop=table(v))
+    mtext(text=paste("Haeufigkeiten", name),side = 3, outer=TRUE)
+    mtext("Auspraegung", 1, outer = TRUE)
+    mtext("Haeufigkeit", 2, outer = TRUE)
+  }
 }
 #Test
-kateg(test$IntMath)
+kateg(test$IntMath, "Interesse Mathe")
 
 # (c) Eine Funktion, die geeignete deskriptive bivariate Statistiken fuer
 # den Zusammenhang zwischen zwei kategorialen Variablen
 # berechnet ausgibt
 
-bivKateg <- function(v1, v2){
-  par(mfrow=c(1,2))
-  
+bivKateg <- function(v1, v2, name1, name2, plot){
+  #browser()
   #einzelne Auswertungen
-  kateg(v1)
-  kateg(v2)
+  kateg(v1, name1, FALSE)
+  kateg(v2, name2, FALSE)
   
   #gemeinsame Haeufigkeiten
   cat("Gemeinsame Haeufigkeiten:", "\n")
-  table(test$IntMath, test$IntPro)
+  print(table(v1, v2))
   
   #evtl noch Plot der gemeinsamen Haeufigkeiten
+  if(plot){
+    dev.off()
+    plot(table(v1,v2), xlab=name1, ylab=name2, 
+         main=paste("Zusammenhang", name1 ,"und", name2))
+  }
+  
 }
 
 #Test
-bivKateg(test$IntMath, test$MLK)
+bivKateg(test$IntMath, test$MLK, "Interesse Mathe", "Mathe LK", TRUE)
 
 
 # (d) Eine Funktion, die geeignete deskriptive bivariate Statistiken fuer
 # den Zusammengang zwischen einer metrischen und einer
 # dichotomen Variablen berechnet und ausgibt
 
-bivMetDicho <- function(met, dic){
+bivMetDicho <- function(met, dic, nameMet, nameDic){
   print(boxplot(met ~ dic, plot=FALSE))
-  boxplot(met ~ dic)
+  dev.off()
+  boxplot(met ~ dic, xlab=nameDic, ylab=nameMet, 
+          main=paste("Zusammenhang", nameMet, "und", nameDic))
 }
 
 #Test
-bivMetDicho(met = test$alter, dic= test$MLK)
+bivMetDicho(met = test$alter, dic= test$MLK, "Alter", "MatheLK")
 
 
 # (e) Eine Funktion, die eine mindestens ordinal skalierte Variable
@@ -101,15 +113,22 @@ quantKateg(test$alter)
 # (f) Eine Funktion, die eine geeignete Visualisierung von drei oder vier
 # kategorialen Variablen erstellt
 
-visualize <- function(v1,v2,v3,v4=""){
+visualize <- function(v1,v2,v3,v4="", name1, name2, name3, name4=""){
   par(mfrow=c(2,2))
-  plot(table(v1))
-  plot(table(v2))
-  plot(table(v3))
-  if(v4!=""){plot(table(v4))}
+  plot(table(v1), xlab=name1, ylab="Haeufigkeit")
+  box()
+  plot(table(v2), xlab=name2, ylab="Haeufigkeit")
+  box()
+  plot(table(v3), xlab=name3, ylab="Haeufigkeit")
+  box()
+  if(v4!=""){
+    plot(table(v4), xlab=name4, ylab="Haeufigkeit")
+    box()
+    }
 }
 
-visualize(test$fach, test$IntMath, test$IntPro, test$MLK)
+visualize(test$fach, test$IntMath, test$IntPro, test$MLK, 
+          "Fach", "InteresseMathe", "Interesse Programmieren", "MatheLK")
 
 # Freiwillig: weitere zur Deskription und Visualisierung geeignete
 # Funktionen
