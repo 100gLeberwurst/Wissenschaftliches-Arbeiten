@@ -8,41 +8,34 @@ test <- data.frame("alter"=round(rnorm(100, mean = 25,sd = 2),1),
 # (a) Eine Funktion, die verschiedene geeignete deskriptive Statistiken
 # fuer metrische Variablen berechnet und ausgibt
 
-metric <- function(v){
-  print(summary(v))
-  cat("Var:", var(v))
-  boxplot(v)
+metric <- function(v, boxpl = FALSE){
+  if(boxpl){boxplot(v)}
+  return(c(summary(v), "Var" = var(v)))
 }
 #Test
 metric(test$alter)
 
-
-
 # b) Eine Funktion, die verschiedene geeignete deskriptive Statistiken
 # fuer kategoriale Variablen berechnet und ausgibt
 
-kateg <- function(v){
-  #browser()
-  #Haeufigkeiten
-  cat("Haeufigkeiten","\n")
-  print(table(v))
-  
-  #Modus
-  cat("\nModus: ", names(which(table(v)==max(table(v)))), "\n")
-  cat("--------------------------", "\n")
+kateg <- function(v, graf = FALSE){
   
   #Grafik
-  n <- length(levels(v))
-  maH <- max(table(v))
-  plot.new()
-  plot.window(xlim=c(0,n+1), ylim=c(0,maH))
-  axis(1, at=0:(n+1), labels = c("",levels(v),""))
-  axis(2)
-  rect(xleft=(1:n)-0.5, ybottom=0, xright=(1:n)+0.5, ytop=table(v))
-  
+  if(graf){
+    n <- length(levels(v))
+    maH <- max(table(v))
+    plot.new()
+    plot.window(xlim=c(0,n+1), ylim=c(0,maH))
+    axis(1, at=0:(n+1), labels = c("",levels(v),""))
+    axis(2)
+    rect(xleft=(1:n)-0.5, ybottom=0, xright=(1:n)+0.5, ytop=table(v))
+  }
+  return(list("Modus" = names(which(table(v)==max(table(v)))), "Hauefigkeiten" = table(v),
+              "relative Hauefigkeiten" = table(v)*(1/length(v))))
+
 }
 #Test
-kateg(test$IntMath)
+kateg(test$IntMath, TRUE)
 
 # (c) Eine Funktion, die geeignete deskriptive bivariate Statistiken fuer
 # den Zusammenhang zwischen zwei kategorialen Variablen
@@ -52,12 +45,18 @@ bivKateg <- function(v1, v2){
   par(mfrow=c(1,2))
   
   #einzelne Auswertungen
-  kateg(v1)
-  kateg(v2)
+  cat("Auswewrtung der Variable v1", "\n")
+  print(kateg(v1))
+  cat("--------------------------", "\n")
+  cat("Auswertung der Variable v2", "\n")
+  print(kateg(v2))
+  cat("--------------------------", "\n")
   
   #gemeinsame Haeufigkeiten
-  cat("Gemeinsame Haeufigkeiten:", "\n")
-  table(test$IntMath, test$IntPro)
+  haeufigkeitstabelle = table(v1, v2)
+  rel_haeufigkeitstabelle = (1/min(c(length(v1), length(v2))))*haeufigkeitstabelle
+  return(list("Kombinationshauefigkeiten" = haeufigkeitstabelle, 
+              "relative Kombinationshaeufigkeiten" = rel_haeufigkeitstabelle))
   
   #evtl noch Plot der gemeinsamen Haeufigkeiten
 }
@@ -71,18 +70,40 @@ bivKateg(test$IntMath, test$MLK)
 # dichotomen Variablen berechnet und ausgibt
 
 bivMetDicho <- function(met, dic){
-  print(boxplot(met ~ dic, plot=FALSE))
   boxplot(met ~ dic)
+  realisationen_von_dic = dic[which(duplicated(janein) == FALSE)]
+  met1 = met[which(dic == realisationen_von_dic[1])]
+  met2 = met[which(dic == realisationen_von_dic[2])]
+  
+  return(list("Realisationen_von_dic" = table(dic), "Erste_Realisation_von_dic" = metric(met1), 
+              "Zweite_Realisation_von_dic" = metric(met2)))
 }
-bivMetDicho(met = test$alter, dic= test$MLK)
+
+#Test
+bivMetDicho(met = test$alter, dic=test$MLK)
 
 
 # (e) Eine Funktion, die eine mindestens ordinal skalierte Variable
 # quantilbasiert kategorisiert (z.B. in niedrig, mittel, hoch)
 
-quantKateg <- function(){
+#unterteilt in hoch, mittel oder niedrig
+#Hoch heißt beispielswese, dass 66% der Realisierungen kleiner sind, als die untere 
+#Grenze des Intervals für hoch
+quantKateg <- function(v){
+  v = as.numeric(v)
+  quants = quantile(v, c(0.33,0.66))
+  categ = 0
+  for(i in 1:length(v)){
+    if(v[i] <= quants[1]){categ[i] = "niedirg"}
+    if(v[i] <= quants[2] && v[i] > quants[1]){categ[i] = "mittel"} 
+    if(v[i] > quants[2]){categ[i] = "hoch"}
+    }
   
+  return(list("Qunatile von v" = quants, "Kategorisierter_Vektor" = categ))
+
 }
+#Test
+quantKateg(test$IntMath)
 
 
 
