@@ -8,10 +8,9 @@ test <- data.frame("alter"=round(rnorm(100, mean = 25,sd = 2),1),
 # (a) Eine Funktion, die verschiedene geeignete deskriptive Statistiken
 # fuer metrische Variablen berechnet und ausgibt
 
-metric <- function(v, name){
-  print(summary(v))
-  cat("Var:", var(v))
-  boxplot(v, xlab=name, main=paste("Auswertung", name))
+metric <- function(v, name, boxpl=FALSE){
+  if(boxpl){boxplot(v, xlab=name, main=paste("Auswertung", name))}
+  return(c(summary(v), "Varianz"=var(v)))
 }
 #Test
 metric(test$alter, "Alter")
@@ -22,14 +21,8 @@ metric(test$alter, "Alter")
 # fuer kategoriale Variablen berechnet und ausgibt
 
 kateg <- function(v, name, plot=TRUE){
-  #browser()
-  #Haeufigkeiten
-  cat("Haeufigkeiten",name, "\n")
-  print(table(v))
-  
-  #Modus
-  cat("\nModus: ", names(which(table(v)==max(table(v)))), "\n")
-  cat("--------------------------", "\n")
+  tab <- table(v)
+  mod <- names(which(table(v)==max(table(v))))
   
   #Grafik
   if(plot){
@@ -45,6 +38,7 @@ kateg <- function(v, name, plot=TRUE){
     mtext("Auspraegung", 1, outer = TRUE)
     mtext("Haeufigkeit", 2, outer = TRUE)
   }
+  return(list("Modus"=mod, "abs. Haeufigkeiten"=tab, "rel. Haeufigkeiten"=tab*(1/length(v))))
 }
 #Test
 kateg(test$IntMath, "Interesse Mathe")
@@ -54,14 +48,17 @@ kateg(test$IntMath, "Interesse Mathe")
 # berechnet ausgibt
 
 bivKateg <- function(v1, v2, name1, name2, plot){
-  #browser()
   #einzelne Auswertungen
-  kateg(v1, name1, FALSE)
-  kateg(v2, name2, FALSE)
+  cat("Auswewrtung der Variable v1", "\n")
+  print(kateg(v1))
+  cat("--------------------------", "\n")
+  cat("Auswertung der Variable v2", "\n")
+  print(kateg(v2))
+  cat("--------------------------", "\n")
   
   #gemeinsame Haeufigkeiten
-  cat("Gemeinsame Haeufigkeiten:", "\n")
-  print(table(v1, v2))
+  tab <- table(v1, v2)
+  rel_tab <- (1/min(c(length(v1), length(v2))))*tab
   
   #evtl noch Plot der gemeinsamen Haeufigkeiten
   if(plot){
@@ -69,6 +66,8 @@ bivKateg <- function(v1, v2, name1, name2, plot){
     plot(table(v1,v2), xlab=name1, ylab=name2, 
          main=paste("Zusammenhang", name1 ,"und", name2))
   }
+  
+  return(list("gemeinsame Haeufigkeiten"= tab, "rel. Haeufigkeiten"=rel_tab))
   
 }
 
