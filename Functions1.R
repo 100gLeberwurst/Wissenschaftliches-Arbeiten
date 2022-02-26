@@ -109,6 +109,9 @@ quantKateg <- function(v){
     if(v[i]<=quantiles[2] && v[i]>quantiles[1]){kat[i] <- "mittel"}
     if(v[i]>quantiles[2]){kat[i] <- "hoch"}
   }
+  if(plot){
+    barplot(table(kat), ylab = "Anzahl", horiz = TRUE, xlim = c(0, (max(table(kat)))+5), width = c(0.2,0.2,0.2))
+  }
   return(kat)
 }
 
