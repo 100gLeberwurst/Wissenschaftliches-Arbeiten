@@ -27,12 +27,12 @@ kateg <- function(v, name, plot=TRUE){
   
   #Grafik
   if(plot){
-    n <- length(levels(v))
+    n <- length(levels(as.factor(v)))
     maH <- max(table(v))
     plot.new()
     plot.window(xlim=c(0,n+1), ylim=c(0,maH))
     par(oma=c(3,3,3,3))
-    axis(1, at=0:(n+1), labels = c("",levels(v),""))
+    axis(1, at=0:(n+1), labels = c("",1:n,""))
     axis(2)
     rect(xleft=(1:n)-0.5, ybottom=0, xright=(1:n)+0.5, ytop=table(v))
     mtext(text=paste("Haeufigkeiten", name),side = 3, outer=TRUE)
