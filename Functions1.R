@@ -18,7 +18,8 @@ metric(test$alter, "Alter")
 
 
 # b) Eine Funktion, die verschiedene geeignete deskriptive Statistiken
-# fuer kategoriale Variablen berechnet und ausgibt
+# fuer kategoriale Variablen berechnet und ausgibt.
+# Erstellt den Modus, die absolute Haeufigkeit und die relative Haeufigkeit.
 
 kateg <- function(v, name, plot=TRUE){
   tab <- table(v)
@@ -45,7 +46,9 @@ kateg(test$IntMath, "Interesse Mathe")
 
 # (c) Eine Funktion, die geeignete deskriptive bivariate Statistiken fuer
 # den Zusammenhang zwischen zwei kategorialen Variablen
-# berechnet ausgibt
+# berechnet ausgibt.
+# Erstellt die gemeinsame Haeufigkeit und die dazugehoerige relative 
+# Haeufigkeit.
 
 bivKateg <- function(v1, v2, name1, name2, plot){
   #einzelne Auswertungen
