@@ -22,8 +22,9 @@ metric(test$alter, "Alter")
 # Erstellt den Modus, die absolute Haeufigkeit und die relative Haeufigkeit.
 
 kateg <- function(v, name, plot=TRUE){
+  load("Functions1.R")
   tab <- table(v)
-  mod <- names(which(table(v)==max(table(v))))
+  mod <- mod(v)
   
   #Grafik
   if(plot){
