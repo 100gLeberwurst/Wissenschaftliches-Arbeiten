@@ -50,10 +50,10 @@ kateg(test$IntMath, "Interesse Mathe")
 bivKateg <- function(v1, v2, name1, name2, plot){
   #einzelne Auswertungen
   cat("Auswewrtung der Variable v1", "\n")
-  print(kateg(v1))
+  print(kateg(v1,name1))
   cat("--------------------------", "\n")
   cat("Auswertung der Variable v2", "\n")
-  print(kateg(v2))
+  print(kateg(v2,name2))
   cat("--------------------------", "\n")
   
   #gemeinsame Haeufigkeiten
