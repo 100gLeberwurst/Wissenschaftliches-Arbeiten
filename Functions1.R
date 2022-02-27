@@ -4,12 +4,19 @@ test <- data.frame("alter"=round(rnorm(100, mean = 25,sd = 2),1),
                    "fach"=factor(sample(c("A", "B", "C"),100, rep=T)),
                    "IntMath" = factor(sample(1:7, 100, rep=T)),
                    "IntPro" = factor(sample(1:7, 100, rep=T)),
-                   "MLK" = factor(sample(0:1, 100, rep=T))                   )
+                   "MLK" = factor(sample(0:1, 100, rep=T)))
 
 # (a) Eine Funktion, die verschiedene geeignete deskriptive Statistiken
 # fuer metrische Variablen berechnet und ausgibt
 
-metric <- function(v, name, boxpl=FALSE){
+
+#Die Frunktion metric gibt als Rueckgabe eine Liste mit: Minimum, Unteres Quartil,
+#Median, Arith. Mittel, oberes Quartil, Maximum und Varianz der Daten. 
+#Wenn der Eingabeparameter "boxpl" auf TRUE setzt, dann wird zudem noch ein Boxplot der
+#Daten gezeichnet und es muss eine ueberschrift eingefuegt werden, ebenfalls als Eingabeparameter.
+#dev.off() wird hier im Falle eines plots und auch bei allen anderen Funktionen in den nur ein plot
+#erstellt wird ausgefuehrt um Voreinstellungen der R-Session des Bentzers zurueckzusetzen.
+metric <- function(v, name = "" , boxpl=FALSE){
   if(boxpl){
     dev.off()
     boxplot(v, xlab=name, main=paste("Auswertung", name))
@@ -17,7 +24,7 @@ metric <- function(v, name, boxpl=FALSE){
   return(c(summary(v), "Varianz"=var(v)))
 }
 #Test
-metric(test$alter, "Alter")
+metric(test$alter, "Alter", TRUE)
 
 
 
@@ -25,7 +32,13 @@ metric(test$alter, "Alter")
 # fuer kategoriale Variablen berechnet und ausgibt.
 # Erstellt den Modus, die absolute Haeufigkeit und die relative Haeufigkeit.
 
-kateg <- function(v, name, plot=TRUE){
+
+#Die Funktion kateg gibt eine Haeufigkeitstabelle zurueck und mit der Hilfsfunktion
+#aus Functions2 auch deren Modalwert. Generiert wird die Tabelle ueber den table Befehl 
+#aus R. Zudem wird eine relative Hauefigkeitstabelle zurueckgegeben, indem durch die Anzahl
+#der Datenpunkte dividiert wird. 
+#Wenn plot TRUE ist, dann wird zudem ein Histogramm der Daten geplottet.
+kateg <- function(v, name = "", plot=FALSE){
   source("Functions2.R")
   tab <- table(v)
   mod <- mod(v)
@@ -48,7 +61,7 @@ kateg <- function(v, name, plot=TRUE){
   return(list("Modus"=mod, "abs. Haeufigkeiten"=tab, "rel. Haeufigkeiten"=tab*(1/length(v))))
 }
 #Test
-kateg(test$IntMath, "Interesse Mathe")
+kateg(test$IntMath, "Interesse Mathe", TRUE)
 
 # (c) Eine Funktion, die geeignete deskriptive bivariate Statistiken fuer
 # den Zusammenhang zwischen zwei kategorialen Variablen
@@ -56,7 +69,12 @@ kateg(test$IntMath, "Interesse Mathe")
 # Erstellt die gemeinsame Haeufigkeit und die dazugehoerige relative 
 # Haeufigkeit.
 
-bivKateg <- function(v1, v2, name1, name2, plot){
+
+#Die Funktion printet zunaechst Haeufigkeitstabellen der einzelnen Variabeln und dann
+#gibt es nach analogen Vorgehen aus b eine absolute und eine realtive Haeufigkeitstabelle 
+#zurueck. Des Weiteren kann auch hier mit plot = TRUE und dementsprechenden Eingaben der 
+#Variablennamen eine GRafik geplotted werden.
+bivKateg <- function(v1, v2, name1 = "", name2 = "", plot = FALSE){
   #einzelne Auswertungen
   cat("Auswertung der Variable v1", "\n")
   print(kateg(v1,name1))
@@ -77,7 +95,6 @@ bivKateg <- function(v1, v2, name1, name2, plot){
   }
   
   return(list("gemeinsame Haeufigkeiten"= tab, "rel. Haeufigkeiten"=rel_tab))
-  
 }
 
 #Test
@@ -88,6 +105,9 @@ bivKateg(test$IntMath, test$MLK, "Interesse Mathe", "Mathe LK", TRUE)
 # den Zusammengang zwischen einer metrischen und einer
 # dichotomen Variablen berechnet und ausgibt
 
+#Die Funktion plottet nebeneinander 2 Boxplots, indem nach der dichotomen Variable aufgeteilt wird.
+#Sie gibt ausserdem die in a erstellten Informationen, ebenfalls aufgeteilt aus, und wie oft
+#die jeweiligne Realisationen der dcihotomen Variable vorkommt.
 bivMetDicho <- function(met, dic, nameMet, nameDic){
   dev.off()
   boxplot(met ~ dic, xlab=nameDic, ylab=nameMet, 
@@ -107,6 +127,8 @@ bivMetDicho(met = test$alter, dic= test$MLK, "Alter", "MatheLK")
 # (e) Eine Funktion, die eine mindestens ordinal skalierte Variable
 # quantilbasiert kategorisiert (z.B. in niedrig, mittel, hoch)
 
+#Kategorisiert mit Hilfe der Quantil-Funktion eine Eingabevariable in 3 verschiedene
+#Klassen und gibt diese als Vektor zurueck, das heisst jede Realisation wird hier einmal kategorisiert.
 quantKateg <- function(v){
   quantiles <- quantile(v, c(0.33,0.66))
   kat <- 0
@@ -126,6 +148,10 @@ quantKateg(test$alter)
 # (f) Eine Funktion, die eine geeignete Visualisierung von drei oder vier
 # kategorialen Variablen erstellt
 
+
+#Gibt fuer 3 oder wenn fuer den Namen von Variable 4 auch eine Eingabe getaetigt wird 
+#entsprechende Barplots aus. Das Vorgehen ist hierbei fuer alle Variablen gleich,
+#und die Plots werden mit Hilfe von par(mfrow = c(2,2)) in ein Grafikfenster geplottet.
 visualize <- function(v1, name1, v2, name2, v3, name3, v4 = "", name4 = "") {
   par(mfrow = c(2, 2), mar = c(4, 6, 2, 1))
   barplot(table(v1), horiz = TRUE, las = 1, col = "lightblue", xlim = c(0, max(table(v1))*1.3),
