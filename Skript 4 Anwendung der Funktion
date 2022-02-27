@@ -1,1 +1,20 @@
-#Anwendung
+source("Functions1.R")
+  data <- read.csv("data.csv")
+  
+  # Aufrufe von metric für alle numerischen Vektoren und Faktoren
+  metric(data$alter, "Alter", boxpl = TRUE)
+  metric(data$intMathe, "Interesse Mathe", boxpl = TRUE)
+  metric(data$intProg, "Interesse Programmieren", boxpl = TRUE)
+  
+  
+  # Aufrufe von kateg
+  kateg(data$studienfach, "Studienfach")
+  kateg(data$intMathe, "Interesse Mathe")
+  kateg(data$intProg, "Interesse Programmieren")
+  kateg(data$matheLK, "Mathe LK")
+  
+  # Aufrufe von bivKateg
+  bivKateg(data$studienfach, data$matheLK, "Studienfach", "Mathe LK", plot = TRUE)
+  bivKateg(data$intMathe, data$matheLK, "Interesse Mathe", "Mathe LK", plot = TRUE)
+  bivKateg(data$intProg, data$matheLK, "Interesse Programmieren", "Mathe LK", plot = TRUE)
+  
