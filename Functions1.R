@@ -120,22 +120,30 @@ quantKateg(test$alter)
 # (f) Eine Funktion, die eine geeignete Visualisierung von drei oder vier
 # kategorialen Variablen erstellt
 
-visualize <- function(v1,v2,v3,v4="", name1, name2, name3, name4=""){
-  par(mfrow=c(2,2))
-  plot(table(v1), xlab=name1, ylab="Haeufigkeit")
+visualize <- function(v1, name1, v2, name2, v3, name3, v4 = "", name4 = "") {
+  par(mfrow = c(2, 2), mar = c(4, 6, 2, 1))
+  barplot(table(v1), horiz = TRUE, las = 1, col = "lightblue", xlim = c(0, max(table(v1))),
+          main=name1)
   box()
-  plot(table(v2), xlab=name2, ylab="Haeufigkeit")
+  mtext(text = "Haeufigkeit", side = 1, line = 2.2)
+  barplot(table(v2), horiz = TRUE, las = 1, col = "red4", xlim = c(0, max(table(v2))),
+          main=name2)
   box()
-  plot(table(v3), xlab=name3, ylab="Haeufigkeit")
+  mtext(text = "Haeufigkeit", side = 1, line = 2.2)
+  barplot(table(v3), horiz = TRUE, las = 1, col = "green4", xlim = c(0, max(table(v3))),
+          main=name3)
   box()
-  if(v4!=""){
-    plot(table(v4), xlab=name4, ylab="Haeufigkeit")
+  mtext(text = "Haeufigkeit", side = 1, line = 2.2)
+  if (v4 != "") {
+    barplot(table(v4), horiz = TRUE, las = 1, col = "darkviolet", xlim = c(0, max(table(v4))),
+            main=name4)
     box()
-    }
+    mtext(text = "Haeufigkeit", side = 1, line = 2.2)
+  }
 }
 
-visualize(test$fach, test$IntMath, test$IntPro, test$MLK, 
-          "Fach", "InteresseMathe", "Interesse Programmieren", "MatheLK")
+visualize(test$fach, "Fach", test$IntMath, "InteresseMathe", test$IntPro,
+  "Interesse Programmieren", test$MLK, "MatheLK")
 
 # Freiwillig: weitere zur Deskription und Visualisierung geeignete
 # Funktionen
