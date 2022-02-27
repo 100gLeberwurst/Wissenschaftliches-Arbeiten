@@ -31,7 +31,7 @@ kateg <- function(v, name, plot=TRUE){
     n <- length(levels(as.factor(v)))
     maH <- max(table(v))
     plot.new()
-    plot.window(xlim=c(0,n+1), ylim=c(0,maH))
+    plot.window(xlim=c(0,n+1), ylim=c(0,maH*1.3))
     par(oma=c(3,3,3,3))
     axis(1, at=0:(n+1), labels = c("",1:n,""))
     axis(2)
@@ -122,28 +122,28 @@ quantKateg(test$alter)
 
 visualize <- function(v1, name1, v2, name2, v3, name3, v4 = "", name4 = "") {
   par(mfrow = c(2, 2), mar = c(4, 6, 2, 1))
-  barplot(table(v1), horiz = TRUE, las = 1, col = "lightblue", xlim = c(0, max(table(v1))),
+  barplot(table(v1), horiz = TRUE, las = 1, col = "lightblue", xlim = c(0, max(table(v1))*1.3),
           main=name1)
   box()
   mtext(text = "Haeufigkeit", side = 1, line = 2.2)
-  barplot(table(v2), horiz = TRUE, las = 1, col = "red4", xlim = c(0, max(table(v2))),
+  barplot(table(v2), horiz = TRUE, las = 1, col = "red4", xlim = c(0, max(table(v2))*1.3),
           main=name2)
   box()
   mtext(text = "Haeufigkeit", side = 1, line = 2.2)
-  barplot(table(v3), horiz = TRUE, las = 1, col = "green4", xlim = c(0, max(table(v3))),
+  barplot(table(v3), horiz = TRUE, las = 1, col = "green4", xlim = c(0, max(table(v3))*1.3),
           main=name3)
   box()
   mtext(text = "Haeufigkeit", side = 1, line = 2.2)
   if (v4 != "") {
-    barplot(table(v4), horiz = TRUE, las = 1, col = "darkviolet", xlim = c(0, max(table(v4))),
+    barplot(table(v4), horiz = TRUE, las = 1, col = "darkviolet", xlim = c(0, max(table(v4))*1.3),
             main=name4)
     box()
     mtext(text = "Haeufigkeit", side = 1, line = 2.2)
   }
 }
 
-visualize(test$fach, "Fach", test$IntMath, "InteresseMathe", test$IntPro,
-  "Interesse Programmieren", test$MLK, "MatheLK")
+visualize(v1=test$fach, name1="Fach", v2=test$IntMath, name2="InteresseMathe", v3=test$IntPro,
+  name3="Interesse Programmieren", v4=test$MLK, name4="MatheLK")
 
 # Freiwillig: weitere zur Deskription und Visualisierung geeignete
 # Funktionen
