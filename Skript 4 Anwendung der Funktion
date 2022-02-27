@@ -25,6 +25,10 @@ source("Functions1.R")
   quantKateg(data$alter)
   table(quantKateg(data$alter))
   
+  #Anhand der Quantile erkennt man, dass es gleich viele Aeltere, mittel Aeltere und Juengere 
+  #Personen gibt. Das unter hoch und niedrig zwei Personen mehr eingeordnet sind erklaert sich
+  #durch die Quantils-Setzung, die bei 33 und 66 Prozent liegt.
+  
   # Aufruf von visualize
   visualize(v1=data$studienfach, v2=data$intMathe, v3=data$intProg, v4=data$matheLK,
             name1="Studienfach", name2="Interesse Mathe", 
