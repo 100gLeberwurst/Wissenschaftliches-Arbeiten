@@ -8,10 +8,10 @@ source("Functions1.R")
   
   
   # Aufrufe von kateg
-  kateg(data$studienfach, "Studienfach")
-  kateg(data$intMathe, "Interesse Mathe")
-  kateg(data$intProg, "Interesse Programmieren")
-  kateg(data$matheLK, "Mathe LK")
+  kateg(data$studienfach, "Studienfach", plot = TRUE)
+  kateg(data$intMathe, "Interesse Mathe", plot = TRUE)
+  kateg(data$intProg, "Interesse Programmieren", plot = TRUE)
+  kateg(data$matheLK, "Mathe LK", plot = TRUE)
   
   # Aufrufe von bivKateg
   bivKateg(data$studienfach, data$matheLK, "Studienfach", "Mathe LK", plot = TRUE)
