@@ -22,8 +22,9 @@ kateg(data$intProg, "Interesse Programmieren", plot = TRUE)
 # Dagegen spricht ein wenig, dass 5 nur eine Ausprägung von 11% hat.
 kateg(data$matheLK, "Mathe LK", plot = TRUE)
 # Ja ist 2:1 gegenüber Nein vertreten.
-# Aufrufe von bivKateg
 
+
+# Aufrufe von bivKateg
 bivKateg(data$studienfach, data$matheLK, "Studienfach", "Mathe LK", plot = TRUE)
 #Ungefaehr 2/3 von den Data Science Studenten hatten Mathe Lk.
 #Von den Informatikern hatte ca. jeder 2te Mathe Lk.
@@ -38,12 +39,32 @@ bivKateg(data$intProg, data$studienfach, "Interesse Programmieren", "Mathe LK", 
 #Data Science und vereinzelt auch Informatik.
 #Jeder, der das hoechste Interesse am Programieren angegeben hat (7), studiert Informatik
 
+
 # Aufrufe von bivMetDicho
 bivMetDicho(data$alter, data$matheLK, "Alter", "Mathe LK")
-# Man erkennt, dass die Altersspanne von Leuten die Mathe LK hatten größer ist (18-29).
+# Man erkennt, dass die Altersspanne von Leuten die Mathe LK hatten groesser ist mit
+# 18 bis 29.
 # Auch erkennt man, dass die Menschen die keinen Mathe LK hatten im Schnitt ein halbes
-# Jahr älter sind.
-# Außerdem ist das Minimum Alter 21.
+# Jahr aelter sind. Ausserdem ist das Minimum Alter 21.
+# Der linke Boxplot hat eine groessere Varianz von 5.2 im Gegensatz zu dem linken, der
+# eine Varainz von 4.49 hat.
+# Die Quantile sind sich jedoch sehr aehnlich.
+
+bivMetDicho(data$intMathe, data$matheLK, "Interesse Mathe", "Mathe LK")
+# Man sieht hier klar, dass die Interessenspanne zwar groesser ist beim linken Boxplot,
+# aber die Quantile und der Mittelwert liegen trotzdem hoeher.
+# Dementsprechend ist die Varianz bei den Leuten die Mathe LK hatten auch ein wenig groesser.
+# Der rechte Boxplot hat sein Minimum bei 3 aber der Mittelwert ist trotzdem sehr niedrig
+# mit nur 4,3.
+
+bivMetDicho(data$intProg, data$matheLK, "Interesse Programmieren", "Mathe LK")
+# Hier ist klar zu erkennen, dass die Menschen die keinen Mathe LK hatten 
+# weniger Interesse an Programmieren haben.
+# Da deren Quantile deutlich niedriger liegen und nur ein einziger Ausreisser bei 7
+# zu finden ist.
+# Der Median ist gleich, aber das arithmetische Mittel ist fast um 1 hoeher bei 
+# den Menschen ohne Mathe LK.
+
 
 # Aufrufe von quantKateg und table davon zur besseren Darstellung
 quantKateg(data$alter)
@@ -51,6 +72,7 @@ table(quantKateg(data$alter))
 #Anhand der Quantile erkennt man, dass es gleich viele Aeltere, mittel Aeltere und Juengere 
 #Personen gibt. Das unter hoch und niedrig zwei Personen mehr eingeordnet sind erklaert sich
 #durch die Quantils-Setzung, die bei 33 und 66 Prozent liegt.
+
 
 # Aufruf von visualize
 visualize(v1=data$studienfach, v2=data$intMathe, v3=data$intProg, v4=data$matheLK,
