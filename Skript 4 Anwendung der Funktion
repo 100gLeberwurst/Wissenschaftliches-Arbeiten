@@ -1,35 +1,47 @@
 source("Functions1.R")
-  data <- read.csv("data.csv")
-  
-  # Aufrufe von metric für alle numerischen Vektoren und Faktoren
-  metric(data$alter, "Alter", boxpl = TRUE)
-  metric(data$intMathe, "Interesse Mathe", boxpl = TRUE)
-  metric(data$intProg, "Interesse Programmieren", boxpl = TRUE)
-  
-  
-  # Aufrufe von kateg
-  kateg(data$studienfach, "Studienfach", plot = TRUE)
-  kateg(data$intMathe, "Interesse Mathe", plot = TRUE)
-  kateg(data$intProg, "Interesse Programmieren", plot = TRUE)
-  kateg(data$matheLK, "Mathe LK", plot = TRUE)
-  
-  # Aufrufe von bivKateg
-  bivKateg(data$studienfach, data$matheLK, "Studienfach", "Mathe LK", plot = TRUE)
-  bivKateg(data$intMathe, data$matheLK, "Interesse Mathe", "Mathe LK", plot = TRUE)
-  bivKateg(data$intProg, data$matheLK, "Interesse Programmieren", "Mathe LK", plot = TRUE)
-  
-  # Aufrufe von bivMetDicho
-  bivMetDicho(data$alter, data$matheLK, "Alter", "Mathe LK")
-  
-  # Aufrufe von quantKateg und table davon zur besseren Darstellung
-  quantKateg(data$alter)
-  table(quantKateg(data$alter))
-  
-  #Anhand der Quantile erkennt man, dass es gleich viele Aeltere, mittel Aeltere und Juengere 
-  #Personen gibt. Das unter hoch und niedrig zwei Personen mehr eingeordnet sind erklaert sich
-  #durch die Quantils-Setzung, die bei 33 und 66 Prozent liegt.
-  
-  # Aufruf von visualize
-  visualize(v1=data$studienfach, v2=data$intMathe, v3=data$intProg, v4=data$matheLK,
-            name1="Studienfach", name2="Interesse Mathe", 
-            name3="Interesse Programmieren", name4="Mathe LK")
+data <- read.csv("data.csv")
+
+# Aufrufe von metric für alle numerischen Vektoren und Faktoren
+metric(data$alter, "Alter", boxpl = TRUE)
+metric(data$intMathe, "Interesse Mathe", boxpl = TRUE)
+metric(data$intProg, "Interesse Programmieren", boxpl = TRUE)
+
+
+# Aufrufe von kateg
+kateg(data$studienfach, "Studienfach", plot = TRUE)
+# Man erkennt, dass Statistik am meisten Verträter mit ~40% hat, danach kommt
+# DataScience mit 33% und am unteren Ende sind Informatik und Mathe mit jeweils
+# 15% und 11%.
+kateg(data$intMathe, "Interesse Mathe", plot = TRUE)
+# Die Wkeiten sehen gleichverteilt für 3-6 aus, 2 ist nur minimal vertreten mit 2%,
+# keiner hat 1 angegeben und 7 hat 8%.
+kateg(data$intProg, "Interesse Programmieren", plot = TRUE)
+# Das hier sieht fast normalverteilt aus mit einem Maximum bei 4 von 27% und zu den Rändern
+# flacher werdene Wkeiten.
+# Dagegen spricht ein wenig, dass 5 nur eine Ausprägung von 11% hat.
+kateg(data$matheLK, "Mathe LK", plot = TRUE)
+# Ja ist 2:1 gegenüber Nein vertreten.
+# Aufrufe von bivKateg
+
+bivKateg(data$studienfach, data$matheLK, "Studienfach", "Mathe LK", plot = TRUE)
+bivKateg(data$intMathe, data$matheLK, "Interesse Mathe", "Mathe LK", plot = TRUE)
+bivKateg(data$intProg, data$matheLK, "Interesse Programmieren", "Mathe LK", plot = TRUE)
+
+# Aufrufe von bivMetDicho
+bivMetDicho(data$alter, data$matheLK, "Alter", "Mathe LK")
+# Man erkennt, dass die Altersspanne von Leuten die Mathe LK hatten größer ist (18-29).
+# Auch erkennt man, dass die Menschen die keinen Mathe LK hatten im Schnitt ein halbes
+# Jahr älter sind.
+# Außerdem ist das Minimum Alter 21.
+
+# Aufrufe von quantKateg und table davon zur besseren Darstellung
+quantKateg(data$alter)
+table(quantKateg(data$alter))
+
+# Aufruf von visualize
+visualize(v1=data$studienfach, v2=data$intMathe, v3=data$intProg, v4=data$matheLK,
+          name1="Studienfach", name2="Interesse Mathe", 
+          name3="Interesse Programmieren", name4="Mathe LK")
+# Hier sieht man erneut die Beobachtungen, die bereits erwähnt wurden.
+
+
