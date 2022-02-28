@@ -17,7 +17,7 @@ test <- data.frame("alter"=round(rnorm(100, mean = 25,sd = 2),1),
 #erstellt wird ausgefuehrt um Voreinstellungen der R-Session des Bentzers zurueckzusetzen.
 metric <- function(v, name = "" , boxpl=FALSE){
   if(boxpl){
-    dev.off()
+    par(mfrow = c(1,1))
     boxplot(v, xlab=name, main=paste("Auswertung", name))
     }
   return(c(summary(v), "Varianz"=var(v)))
@@ -44,7 +44,7 @@ kateg <- function(v, name = "", plot=FALSE){
   
   #Grafik
   if(plot){
-    dev.off()
+    par(mfrow = c(1,1))
     n <- length(levels(as.factor(v)))
     maH <- max(table(v))
     plot.new()
@@ -88,7 +88,7 @@ bivKateg <- function(v1, v2, name1 = "", name2 = "", plot = FALSE){
   
   #evtl noch Plot der gemeinsamen Haeufigkeiten
   if(plot){
-    dev.off()
+    par(mfrow = c(1,1))
     plot(table(v1,v2), xlab=name1, ylab=name2, 
          main=paste("Zusammenhang", name1 ,"und", name2))
   }
@@ -108,7 +108,7 @@ bivKateg(test$IntMath, test$MLK, "Interesse Mathe", "Mathe LK", TRUE)
 #Sie gibt ausserdem die in a erstellten Informationen, ebenfalls aufgeteilt aus, und wie oft
 #die jeweiligne Realisationen der dcihotomen Variable vorkommt.
 bivMetDicho <- function(met, dic, nameMet, nameDic){
-  dev.off()
+  par(mfrow = c(1,1))
   boxplot(met ~ dic, xlab=nameDic, ylab=nameMet, 
           main=paste("Zusammenhang", nameMet, "und", nameDic))
   realisationen_von_dic = dic[which(duplicated(dic) == FALSE)]
